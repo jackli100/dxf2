@@ -4,11 +4,12 @@
 
 For each closed polyline on the demolition layer of ``room_and_number.dxf``
 the centroid is projected onto the railway from ``break.dxf`` to obtain its
+
 mileage. The script also calculates whether the polygon lies to the left or right
 of the alignment, the minimum distance from any vertex to the railway and the
 polygon area. Results are sorted by mileage and written to
 ``demolition_polyline_info.csv``.
-"""
+
 
 from pathlib import Path
 import csv
@@ -59,34 +60,42 @@ def calc_cum_len(vecs):
         cum.append(cum[-1] + vecs[i].distance(vecs[i + 1]))
     return cum
 
+
 def closest_point_info(vecs, cum, point, offset):
     """Return mileage, distance, direction and projected point on a polyline."""
     best_len = None
     best_dist = float('inf')
     best_dir = None
     best_proj = None
+
     for i in range(len(vecs) - 1):
         a, b = vecs[i], vecs[i + 1]
         ab = b - a
         if ab.magnitude < TOLERANCE:
             continue
         proj = (point - a).dot(ab) / (ab.magnitude ** 2)
+
         proj_clamped = min(1.0, max(0.0, proj))
         proj_pt = a + ab * proj_clamped
+
         dist = point.distance(proj_pt)
         if dist < best_dist:
             best_dist = dist
             best_len = cum[i] + (proj_pt - a).magnitude
+
             best_dir = ab.normalize()
             best_proj = proj_pt
     if best_len is None:
         return None, None, None, None
     return best_len + offset, best_dist, best_dir, best_proj
 
+
 def distance_to_rail(point, rail_data):
     best = float('inf')
     for pts, cum, offset in rail_data:
+
         _, dist, _, _ = closest_point_info(pts, cum, point, offset)
+
         if dist < best:
             best = dist
     return best
@@ -161,6 +170,7 @@ def main():
         area, centroid = polygon_area_centroid(poly)
         best_mileage = None
         best_dist = float('inf')
+
         best_dir = None
         proj_pt = None
         for pts, cum, offset in rail_data:
@@ -170,12 +180,14 @@ def main():
                 best_dist = dist
                 best_dir = direction
                 proj_pt = proj
+
         min_vertex_dist = float('inf')
         for x, y in poly:
             pt = Vec2(x, y)
             dist = distance_to_rail(pt, rail_data)
             if dist < min_vertex_dist:
                 min_vertex_dist = dist
+
         side = None
         if best_dir is not None and proj_pt is not None and best_mileage is not None:
             vec = centroid - proj_pt
@@ -190,14 +202,17 @@ def main():
         rows.append({
             'mileage_m': round(best_mileage, 3) if best_mileage is not None else None,
             'side': side,
+
             'min_vertex_dist': round(min_vertex_dist, 3) if min_vertex_dist != float('inf') else None,
             'area': round(area, 3)
         })
 
     if rows:
+
         rows.sort(key=lambda r: r['mileage_m'] if r['mileage_m'] is not None else float('inf'))
         with open(OUTPUT_CSV, 'w', newline='', encoding='utf-8') as f:
             writer = csv.DictWriter(f, fieldnames=['mileage_m', 'side', 'min_vertex_dist', 'area'])
+
             writer.writeheader()
             writer.writerows(rows)
         print(f'[OK] Saved {len(rows)} records to {OUTPUT_CSV}')

@@ -36,6 +36,7 @@ Execute `python rail_power_draw.py` after configuring the paths and the script
 will save a new DXF with annotations added.
 
 
+
 ### `extract_closed_polyline_text.py`
 
 Extracts single line text entities located inside closed polylines on the
@@ -59,6 +60,7 @@ by mileage.
 Execute `python demolition_polyline_info.py` after adjusting the constants at the
 top of the file.
 
+
 ## Installation
 1. Install Python 3.8 or higher.
 2. Install dependencies:
@@ -79,8 +81,10 @@ Edit the variables at the top of each script to point to your DXF file and, for
 `rail_power_draw.py`, the mileage-angle table. Then run one of the scripts from
 command line:
 ```bash
+
 python rail_power.py
 python rail_power_draw.py
 python extract_closed_polyline_text.py
 python demolition_polyline_info.py
 ```
+
