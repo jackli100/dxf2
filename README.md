@@ -38,10 +38,24 @@ will save a new DXF with annotations added.
 
 ### `extract_closed_polyline_text.py`
 
+Extracts single line text entities located inside closed polylines on the
+demolition layer of `room_and_number.dxf`. Each label is projected
+perpendicularly onto the railway alignment from `break.dxf` to obtain its
+mileage. The text content, polyline vertices and mileage are written to
+`room_and_number_extracted.csv`.
 
-Execute `python extract_closed_polyline_text.py` and a CSV named
-`room_and_number_extracted.csv` will be produced if matching features are
-found.
+Run `python extract_closed_polyline_text.py` and the CSV will be produced if
+matching features are found.
+
+### `demolition_polyline_info.py`
+
+Analyses every closed polyline on the demolition layer and projects each
+centroid onto the railway alignment in `break.dxf` to obtain its mileage. The
+script also reports the shortest distance from any polygon vertex to the railway
+and the polygon area. Results are written to `demolition_polyline_info.csv`.
+
+Execute `python demolition_polyline_info.py` after adjusting the constants at the
+top of the file.
 
 ## Installation
 1. Install Python 3.8 or higher.
@@ -66,4 +80,5 @@ command line:
 python rail_power.py
 python rail_power_draw.py
 python extract_closed_polyline_text.py
-
+python demolition_polyline_info.py
+```
