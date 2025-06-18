@@ -38,10 +38,14 @@ will save a new DXF with annotations added.
 
 ### `extract_closed_polyline_text.py`
 
+Extracts single line text entities located inside closed polylines on the
+demolition layer of `room_and_number.dxf`. Each label is projected
+perpendicularly onto the railway alignment from `break.dxf` to obtain its
+mileage. The text content, polyline vertices and mileage are written to
+`room_and_number_extracted.csv`.
 
-Execute `python extract_closed_polyline_text.py` and a CSV named
-`room_and_number_extracted.csv` will be produced if matching features are
-found.
+Run `python extract_closed_polyline_text.py` and the CSV will be produced if
+matching features are found.
 
 ## Installation
 1. Install Python 3.8 or higher.
