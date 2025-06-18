@@ -47,6 +47,7 @@ mileage. The text content, polyline vertices and mileage are written to
 Run `python extract_closed_polyline_text.py` and the CSV will be produced if
 matching features are found.
 
+
 ## Installation
 1. Install Python 3.8 or higher.
 2. Install dependencies:
@@ -70,4 +71,5 @@ command line:
 python rail_power.py
 python rail_power_draw.py
 python extract_closed_polyline_text.py
-
+python demolition_polyline_info.py
+```
